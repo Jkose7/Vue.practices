@@ -1,30 +1,61 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed } from 'vue'
+
+const productos = ref([])
+const producto = ref({
+  nombre: '',
+  precio: ''
+})
+
+const subTotal = computed(() => {
+  const precioIVA = producto.value.precio * 1.19
+  return precioIVA
+})
+
+const addToFactura = () => {
+  productos.value.push(
+    {
+      ...producto.value
+    }
+  )
+
+  producto.value = {
+    nombre: '',
+    precio: ''
+  }
+
+  console.log(productos.value)
+}
+
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+
+    <div>
+      <h1>Nombre</h1>
+      <input type="text" v-model="producto.nombre">
+    </div>
+
+    <div>
+      <h1>Precio</h1>
+      <input type="text" v-model="producto.precio">
+    </div>
+    <button @click="addToFactura">añadir a la factura</button>
+
+    <div class="factura">
+      <h1>Factura</h1>
+
+      <div v-for="producto in productos" :key="producto.nombre">
+        <h2>
+          {{ producto.nombre }} : {{ producto.precio }}
+        </h2>
+      </div>
+
+      {{ subTotal }}
+    </div>
+
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style scoped></style>
