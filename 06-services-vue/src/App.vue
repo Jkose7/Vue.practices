@@ -5,7 +5,6 @@ import List from './components/List.vue';
 
 <template>
   <h1 class="text-red-400">
-    services
     <List></List>
   </h1>
 </template>
