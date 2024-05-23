@@ -1,9 +1,22 @@
 <script setup>
+import AuthService from '../services/AuthService.js'
 import { ref } from 'vue'
+
 const dataUser = ref({
     email: '',
     password: ''
 })
+
+const loginUser = async () => {
+    const auth = new AuthService
+    const success = await auth.login(dataUser.value.email, dataUser.value.password)
+
+    if (success) {
+        console.log('true')
+    }else{
+        console.log('falso')
+    }
+}
 
 </script>
 
@@ -22,15 +35,9 @@ const dataUser = ref({
                         Email address
                     </label>
                     <div class="mt-2">
-                        <input 
-                        id="email"
-                        name="email" 
-                        type="email"
-                        autocomplete="email" 
-                        v-model="dataUser.email"
-                        required 
-                        class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        >
+                        <input id="email" name="email" type="email" autocomplete="email" v-model="dataUser.email"
+                            required
+                            class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                 </div>
 
@@ -53,9 +60,10 @@ const dataUser = ref({
                 </div>
 
                 <div>
-                    <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign
-                        in</button>
+                    <button type="submit" @click.prevent="loginUser"
+                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Sign in
+                    </button>
                 </div>
 
                 {{ dataUser }}
