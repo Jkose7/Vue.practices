@@ -38,7 +38,8 @@ const googleAuth = new GoogleAuthProvider()
 const authGoogle = async () => {
     const auth = getAuth()
     signInWithPopup(auth, googleAuth)
-        .then(() => {
+        .then((credentials) => {
+            const token = credentials.credetianlsIn
             console.log('true')
         }).catch(() => {
             console.log('false')

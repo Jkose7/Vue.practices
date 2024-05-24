@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import Card from './components/Card.vue'
+import Options from './Options.vue'
 
 // UTILIZANDO LA COMPONENTS API
 
@@ -17,6 +18,7 @@ import Card from './components/Card.vue'
 
 // dos objetos para uno para guardar un profesor 
 // otro para guardarlos todos
+
 const teachers = ref([])
 const teacher = ref({
   name: '',
@@ -37,7 +39,7 @@ const addTeacher = () => {
 
 <!-- v-model nos ayuda a bindear las variables con los inputs -->
 <template>
-  <form class="form">
+  <!-- <form class="form">
     <label for="">Name</label>
     <input type="text" v-model="teacher.name">
 
@@ -62,8 +64,9 @@ const addTeacher = () => {
         :documentation="te.documentation"
       />
     </div>
-  </div>
+  </div> -->
 
+  <Options></Options>
 </template>
 
 <style scoped>
