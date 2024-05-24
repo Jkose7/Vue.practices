@@ -1,21 +1,48 @@
 <script setup>
-import AuthService from '../services/AuthService.js'
 import { ref } from 'vue'
-
 const dataUser = ref({
     email: '',
     password: ''
 })
 
-const loginUser = async () => {
+//Auth with traditional backend 
+import AuthService from '../services/AuthService.js'
+const authBackend = async () => {
     const auth = new AuthService
     const success = await auth.login(dataUser.value.email, dataUser.value.password)
 
     if (success) {
         console.log('true')
-    }else{
+    } else {
         console.log('falso')
     }
+}
+
+//Auth with firebase 
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+const authFirebase = async () => {
+    const auth = getAuth()
+    signInWithEmailAndPassword(auth, dataUser.value.email, dataUser.value.password)
+        .then(() => {
+            console.log('true')
+        }).catch((err) => {
+            console.log(err)
+        })
+}
+
+
+//Auth social
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+const googleAuth = new GoogleAuthProvider()
+
+const authGoogle = async () => {
+    const auth = getAuth()
+    signInWithPopup(auth, googleAuth)
+        .then(() => {
+            console.log('true')
+        }).catch(() => {
+            console.log('false')
+        })
 }
 
 </script>
@@ -28,7 +55,7 @@ const loginUser = async () => {
             </h2>
         </div>
 
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm flex flex-col gap-6">
             <form class="space-y-6">
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
@@ -60,14 +87,21 @@ const loginUser = async () => {
                 </div>
 
                 <div>
-                    <button type="submit" @click.prevent="loginUser"
+                    <button @click.prevent="authFirebase"
                         class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Sign in
                     </button>
                 </div>
 
-                {{ dataUser }}
             </form>
+            <div class="w-full flex justify-between text-center items-center gap-4">
+                <button class="w-full border-2 border-gray-400 text-gray-400 rounded-md py-1"
+                    @click.prevent="authGoogle">Google</button>
+                <button class="w-full border-2 border-gray-400 text-gray-400 rounded-md py-1"
+                    @click.prevent="authGithub">GitHub</button>
+                <button class="w-full border-2 border-gray-400 text-gray-400 rounded-md py-1"
+                    @click.prevent="authFacebook">Facebook</button>
+            </div>
         </div>
     </div>
 </template>
