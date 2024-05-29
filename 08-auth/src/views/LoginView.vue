@@ -23,11 +23,19 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 const authFirebase = async () => {
     const auth = getAuth()
     signInWithEmailAndPassword(auth, dataUser.value.email, dataUser.value.password)
-        .then(() => {
-            console.log('true')
+        .then((res) => {
+            const token = res.user.accessToken
+            $cookies.set('auth', token)
+            console.log(token)
+            alert('Success')
         }).catch((err) => {
-            console.log(err)
+            alert(err)
         })
+}
+
+
+const getInfoFromUser = () => {
+    const token = $cookies.get('auth')
 }
 
 
